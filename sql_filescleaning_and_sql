@@ -62,7 +62,7 @@ apareguin les primeres
 select
   B.Description,
   sum(A.Cancelled) as SumCancelled
-from Flights A left join Carriers B on A.UniqueCarrier=B.Code
+from Flights A left join Carriers B on A.UniqueCarrier=B.CarrierCode
 group by A.UniqueCarrier
 order by SumCancelled desc;
 
@@ -86,6 +86,6 @@ Select
   TailNum,
   sum(Distance) as sumDistance
 from Flights
-group by Tailnum,
+group by Tailnum
 order by sum(Distance) desc
 limit 10;
