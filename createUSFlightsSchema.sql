@@ -50,6 +50,16 @@ IGNORE 1 ROWS
 
 ALTER TABLE Flights
 ADD ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY;
+
+FOREIGN KEY (Dest)
+	REFERENCES USAirports (IATA),
+
+	FOREIGN KEY (Origin)
+	REFERENCES USAirports (IATA),
+
+	FOREIGN KEY (UniqueCarrier)
+	REFERENCES Carriers (CarrierCode)
+
 /*
 (flightID,
 colYear,
@@ -74,14 +84,3 @@ Cancelled = nullif(@Cancelled,'')
 ;
 
 
-
-/*
-
-	FOREIGN KEY (Dest)
-	REFERENCES USAirports (IATA),
-
-	FOREIGN KEY (Origin)
-	REFERENCES USAirports (IATA),
-
-	FOREIGN KEY (UniqueCarrier)
-	REFERENCES Carriers (CarrierCode)
