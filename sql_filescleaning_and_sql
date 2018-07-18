@@ -1,0 +1,91 @@
+
+// Prepare lighter airports
+
+awk '{OFS=FS=",";ORS="\r\n"}{print $1,$2,$3;}' <airports.csv> newairports.csv
+
+// Prepare lighter Flights
+
+awk '{OFS=FS=",";ORS="\r\n"}{print $10,$1,$2,$9,$11,$15,$16,$17,$18,$19,$22;}' <2000.csv> new2000.csv
+sed -i -e 's/NA/./g' new2000.csv
+
+SQL
+===========
+
+1- Quantitat de registres de la taula de vols:
+
+Select count(*) from Flights;
+
+
+
+2- Retard promig de sortida i arribada segons l’aeroport origen.
+
+Select
+  Avg(ArrDelay) as AvgArrDelay,
+  Avg(DepDelay) as AvgDepDelay
+from Flights
+group by Origin;
+
+
+3- Retard promig d’arribada dels vols, per mesos i segons l’aeroport origen.
+A més,volen que els resultat es mostrin de la següent forma:
+LAX, 2000, 01, retard
+LAX, 2000, 02, retard
+...
+LAX, 2000, 12, Retard
+
+Select
+  Origin,
+  colYear,
+  colMonth,
+  Avg(ArrDelay) as AvgArrDelay
+from Flights
+group by 1,2,3;
+
+
+4- Retard promig d’arribada dels vols,
+per mesos i segons l’aeroport origen (mateixaconsulta que abans i amb el mateix ordre).
+Però a més, ara volen que en comptesdel codi de l’aeroport es mostri el nom de la ciutat.
+Los Angeles, 2000, 01, retard
+
+Select
+  A.City,
+  B.colYear,
+  B.colMonth,
+  Avg(B.ArrDelay) as AvgArrDelay
+from USAirports A right join Flights B on A.IATA = B.Origin
+group by 1,2,3;
+
+5 - Les companyies amb més vols cancelats. A més,
+han d’estar ordenades de formaque les companyies amb més cancelacions
+apareguin les primeres
+
+select
+  B.Description,
+  sum(A.Cancelled) as SumCancelled
+from Flights A left join Carriers B on A.UniqueCarrier=B.Code
+group by A.UniqueCarrier
+order by SumCancelled desc;
+
+
+6- Companyies amb el seu promig només d’aquelles les quals els seus vols
+ arriben alseu destí amb un retràs major de 10 minuts.
+
+select
+  UniqueCarrier,
+  Avg(ArrDelay) as AvgArrDelay
+from Flights
+group by UniqueCarrier
+order by AvgArrDelay desc
+limit 10;
+
+
+7 L’identificador dels 10 avions que més kilòmetres han recorregut
+fent volscomercials:
+
+Select
+  TailNum,
+  sum(Distance) as sumDistance
+from Flights
+group by Tailnum,
+order by sum(Distance) desc
+limit 10;

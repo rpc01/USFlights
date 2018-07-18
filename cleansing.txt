@@ -1,0 +1,21 @@
+awk '{OFS=FS=",";ORS="\r\n"}{print $1,$2,$3;}' <airports.csv> newairports.csv
+
+flightID		INT NOT NULL PRIMARY KEY,
+colYear			SMALLINT,
+colMonth		SMALLINT,
+UniqueCarrier	VARCHAR(32),
+TailNum			VARCHAR(32),
+ArrDelay		SMALLINT,
+DepDelay		SMALLINT,
+Origin			VARCHAR(32),
+Dest			VARCHAR(32),
+Distance		SMALLINT,
+Cancelled		BOOLEAN,
+flightID		INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+
+
+1Year,2Month,3DayofMonth,4DayOfWeek,5DepTime,6CRSDepTime,7ArrTime,8CRSArrTime,9UniqueCarrier,10FlightNum,11TailNum,12ActualElapsedTime,13CRSElapsedTime,14AirTime,15ArrDelay,
+16DepDelay,17Origin,18Dest,19Distance,20TaxiIn,21TaxiOut,22Cancelled,23CancellationCode,24Diverted,25CarrierDelay,26WeatherDelay,27NASDelay,28SecurityDelay,29LateAircraftDelay
+
+awk '{OFS=FS=",";ORS="\r\n"}{print $10,$1,$2,$9,$11,$15,$16,$17,$18,$19,$22;}' <2000.csv> new2000.csv
+sed -i -e 's/NA/./g' new2000.csv
